@@ -1,37 +1,45 @@
 package br.com.alura.ceep.ui.roomwordssample
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WordViewModel(private val repository: WordRepository) : ViewModel() {
 
-    // Using LiveData and caching what allWords returns has several benefits:
-    // - We can put an observer on the data (instead of polling for changes) and only update the
-    //   the UI when the data actually changes.
-    // - Repository is completely separated from the UI through the ViewModel.
-    val allWords: LiveData<List<Word>> = repository.allWords.asLiveData()
+  val list = MutableLiveData<List<Word>>()
+  val filtered = MutableLiveData<Word>()
 
-    /**
-     * Launching a new coroutine to insert the data in a non-blocking way
-     */
-    fun insert(word: Word) = viewModelScope.launch {
-        repository.insert(word)
+  fun getAll() {
+    viewModelScope.launch(Dispatchers.IO) {
+      val words = repository.get()
+      list.postValue(words)
     }
-}
+  }
 
-private fun <E> List<E>.asLiveData(): LiveData<List<E>> {
-    TODO("Not yet implemented")
-}
+  fun getEgg() {
+    viewModelScope.launch(Dispatchers.IO) {
+      val words = repository.get()
+      val egg = words.first { it.word == "Egg" }
+      filtered.postValue(egg)
+    }
+  }
 
-class WordViewModelFactory(private val repository: WordRepository) : ViewModelProvider.Factory {
+  fun add(word: Word) {
+    viewModelScope.launch(Dispatchers.IO) {
+      repository.add(word)
+    }
+  }
+
+  class WordViewModelFactory(private val repository: WordRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(WordViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return WordViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+      if (modelClass.isAssignableFrom(WordViewModel::class.java)) {
+        @Suppress("UNCHECKED_CAST")
+        return WordViewModel(repository) as T
+      }
+      throw IllegalArgumentException("Unknown ViewModel class")
     }
+  }
 }
