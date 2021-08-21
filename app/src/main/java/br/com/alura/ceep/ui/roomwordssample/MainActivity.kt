@@ -3,7 +3,6 @@ package br.com.alura.ceep.ui.roomwordssample
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -42,11 +41,17 @@ class MainActivity : AppCompatActivity() {
       // escreve min. toast e aperta TAB
       Toast.makeText(this, firstWord.word, Toast.LENGTH_SHORT).show()
     }
+    wordViewModel.filtered.observe(this) { numbers ->
+      val firstNumbers = numbers.first()
+      // escreve min. toast e aperta TAB
+      Toast.makeText(this, firstNumbers.word, Toast.LENGTH_SHORT).show()
+    }
     lifecycleScope.launch {
       wordViewModel.add(Word("Banana", 6))
       wordViewModel.add(Word("Uva", 3))
       wordViewModel.getAll()
       wordViewModel.getByName("Banana")
+      wordViewModel.getBySize(3)
     }
     val fab = findViewById<FloatingActionButton>(R.id.fab)
     fab.setOnClickListener {
