@@ -4,6 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Word(
+data class ASDDASWord(
   @PrimaryKey val word: String
 )
