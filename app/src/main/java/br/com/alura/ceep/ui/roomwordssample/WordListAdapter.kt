@@ -1,7 +1,5 @@
 package br.com.alura.ceep.ui.roomwordssample
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -32,11 +30,9 @@ class WordListAdapter : RecyclerView.Adapter<WordViewHolder>() {
         return list.last()
     }
 
-
     override fun getItemCount(): Int {
         return list.count()
     }
-
 
     companion object {
         private val WORDS_COMPARATOR = object : DiffUtil.ItemCallback<Word>() {

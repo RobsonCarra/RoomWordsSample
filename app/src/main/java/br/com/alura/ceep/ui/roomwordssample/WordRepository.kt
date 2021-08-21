@@ -10,4 +10,5 @@ class WordRepository(private val wordDao: WordDao) {
     wordDao.insert(word)
     return true
   }
+
 }

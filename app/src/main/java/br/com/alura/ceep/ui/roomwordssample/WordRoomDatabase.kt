@@ -13,44 +13,44 @@ import kotlinx.coroutines.launch
 @Database(entities = [Word::class], version = 1, exportSchema = false)
 abstract class WordRoomDatabase : RoomDatabase() {
 
-  abstract fun wordDao(): WordDao
+    abstract fun wordDao(): WordDao
 
-  private class WordDatabaseCallback() : RoomDatabase.Callback() {
+    private class WordDatabaseCallback() : RoomDatabase.Callback() {
 
-    override fun onCreate(db: SupportSQLiteDatabase) {
-      super.onCreate(db)
-      INSTANCE?.let { database ->
-        GlobalScope.launch(Dispatchers.IO) {
-          val wordDao = database.wordDao()
-          database.clearAllTables()
-          wordDao.insert(Word("Hello"))
-          wordDao.insert(Word("World!"))
-          wordDao.insert(Word("Robson!"))
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            INSTANCE?.let { database ->
+                GlobalScope.launch(Dispatchers.IO) {
+                    val wordDao = database.wordDao()
+                    database.clearAllTables()
+                    wordDao.insert(Word("Hello"))
+                    wordDao.insert(Word("World!"))
+                    wordDao.insert(Word("Robson!"))
+                }
+            }
         }
-      }
     }
-  }
 
-  companion object {
+    companion object {
 
-    @Volatile
-    private var INSTANCE: WordRoomDatabase? = null
+        @Volatile
+        private var INSTANCE: WordRoomDatabase? = null
 
-    fun getDatabase(
-      context: Context
-    ): WordRoomDatabase {
-      // if the INSTANCE is not null, then return it,
-      // if it is, then create the database
-      return INSTANCE ?: synchronized(this) {
-        val instance = Room.databaseBuilder(
-          context.applicationContext,
-          WordRoomDatabase::class.java,
-          "word_database2"
-        ).addCallback(WordDatabaseCallback()).build()
-        INSTANCE = instance
-        // return instance
-        instance
-      }
+        fun getDatabase(
+            context: Context
+        ): WordRoomDatabase {
+            // if the INSTANCE is not null, then return it,
+            // if it is, then create the database
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    WordRoomDatabase::class.java,
+                    "word_database2"
+                ).addCallback(WordDatabaseCallback()).build()
+                INSTANCE = instance
+                // return instance
+                instance
+            }
+        }
     }
-  }
 }

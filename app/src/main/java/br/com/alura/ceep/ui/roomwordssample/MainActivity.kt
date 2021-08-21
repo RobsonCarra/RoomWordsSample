@@ -3,6 +3,7 @@ package br.com.alura.ceep.ui.roomwordssample
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.ceep.ui.roomwordssample.WordViewModel.WordViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,8 +35,15 @@ class MainActivity : AppCompatActivity() {
     }
     lifecycleScope.launch {
       wordViewModel.getAll()
+      wordViewModel.getByName("World")
       wordViewModel.add(Word("Pierry2"))
+      wordViewModel.add(Word("World"))
     }
+    val word:
+    val toast: Toast = Toast.makeText(this, , Toast.LENGTH_LONG)
+    toast.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL, 0, 0)
+    toast.show()
+
     val fab = findViewById<FloatingActionButton>(R.id.fab)
     fab.setOnClickListener {
       val intent = Intent(this@MainActivity, NewWordActivity::class.java)
