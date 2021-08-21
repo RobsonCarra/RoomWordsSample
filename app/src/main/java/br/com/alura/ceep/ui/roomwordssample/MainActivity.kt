@@ -14,7 +14,11 @@ import br.com.alura.ceep.ui.roomwordssample.WordViewModel.WordViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
-
+/*
+1. criar no repositorio funcao para buscar por size
+2. criar no viewmodel funcao para popular a lista filtered pelo tamanho
+3. mostrar na acitivty num toast a palavra buscada pelo tamanho
+ */
 class MainActivity : AppCompatActivity() {
 
   private val newWordActivityRequestCode = 1
@@ -33,17 +37,17 @@ class MainActivity : AppCompatActivity() {
       adapter.list.addAll(words)
       adapter.notifyDataSetChanged()
     }
-    lifecycleScope.launch {
-      wordViewModel.getAll()
-      wordViewModel.getByName("World")
-      wordViewModel.add(Word("Pierry2"))
-      wordViewModel.add(Word("World"))
+    wordViewModel.filtered.observe(this) { words ->
+      val firstWord = words.first()
+      // escreve min. toast e aperta TAB
+      Toast.makeText(this, firstWord.word, Toast.LENGTH_SHORT).show()
     }
-    val word:
-    val toast: Toast = Toast.makeText(this, , Toast.LENGTH_LONG)
-    toast.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL, 0, 0)
-    toast.show()
-
+    lifecycleScope.launch {
+      wordViewModel.add(Word("Banana", 6))
+      wordViewModel.add(Word("Uva", 3))
+      wordViewModel.getAll()
+      wordViewModel.getByName("Banana")
+    }
     val fab = findViewById<FloatingActionButton>(R.id.fab)
     fab.setOnClickListener {
       val intent = Intent(this@MainActivity, NewWordActivity::class.java)
@@ -55,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     super.onActivityResult(requestCode, resultCode, intentData)
     if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
       intentData?.getStringExtra(NewWordActivity.EXTRA_REPLY)?.let { reply ->
-        val word = Word(reply)
+        // val word = Word(reply.)
         // wordViewModel.insert(word)
       }
     } else {

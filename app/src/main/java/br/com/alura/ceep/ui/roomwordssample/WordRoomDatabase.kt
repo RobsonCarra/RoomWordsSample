@@ -23,9 +23,9 @@ abstract class WordRoomDatabase : RoomDatabase() {
                 GlobalScope.launch(Dispatchers.IO) {
                     val wordDao = database.wordDao()
                     database.clearAllTables()
-                    wordDao.insert(Word("Hello"))
-                    wordDao.insert(Word("World!"))
-                    wordDao.insert(Word("Robson!"))
+                    wordDao.insert(Word("Hello", 5))
+                    wordDao.insert(Word("World!", 6))
+                    wordDao.insert(Word("Robson!", 7))
                 }
             }
         }
@@ -45,7 +45,7 @@ abstract class WordRoomDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     WordRoomDatabase::class.java,
-                    "word_database2"
+                    "word_database3"
                 ).addCallback(WordDatabaseCallback()).build()
                 INSTANCE = instance
                 // return instance
