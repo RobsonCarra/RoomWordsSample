@@ -24,8 +24,8 @@ abstract class WordRoomDatabase : RoomDatabase() {
                     val wordDao = database.wordDao()
                     database.clearAllTables()
                     wordDao.insert(Word("Hello", 5, "guys", 2.50))
-                    wordDao.insert(Word("World!", 6, "War",3.00))
-                    wordDao.insert(Word("Robson!", 7, "Car",2.35))
+                    wordDao.insert(Word("World!", 6, "War", 3.00))
+                    wordDao.insert(Word("Robson!", 7, "Car", 2.35))
                 }
             }
         }

@@ -52,10 +52,9 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, firstPrice.price.toString(), Toast.LENGTH_SHORT).show()
         }
 
-
         lifecycleScope.launch {
-            wordViewModel.add(Word("Banana", 6, "Verde",2.0))
-            wordViewModel.add(Word("Uva", 3, "Big",3.89))
+            wordViewModel.add(Word("Banana", 6, "Verde", 2.0))
+            wordViewModel.add(Word("Uva", 3, "Big", 3.89))
             wordViewModel.getAll()
             wordViewModel.getByName("Banana")
             wordViewModel.getBySize(6)
