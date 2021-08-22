@@ -6,5 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Word(
   @PrimaryKey val word: String,
-  val size: Int
+  val size: Int,
+  val description: String,
+  val price: Double
 )

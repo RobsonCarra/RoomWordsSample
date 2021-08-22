@@ -20,60 +20,69 @@ import kotlinx.coroutines.launch
  */
 class MainActivity : AppCompatActivity() {
 
-  private val newWordActivityRequestCode = 1
-  private val wordViewModel: WordViewModel by viewModels {
-    WordViewModelFactory((application as WordsApplication).repository)
-  }
+    private val newWordActivityRequestCode = 1
+    private val wordViewModel: WordViewModel by viewModels {
+        WordViewModelFactory((application as WordsApplication).repository)
+    }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-    val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-    val adapter = WordListAdapter()
-    recyclerView.adapter = adapter
-    recyclerView.layoutManager = LinearLayoutManager(this)
-    wordViewModel.list.observe(this) { words ->
-      adapter.list.addAll(words)
-      adapter.notifyDataSetChanged()
-    }
-    wordViewModel.filtered.observe(this) { words ->
-      val firstWord = words.first()
-      // escreve min. toast e aperta TAB
-      Toast.makeText(this, firstWord.word, Toast.LENGTH_SHORT).show()
-    }
-    wordViewModel.filtered.observe(this) { numbers ->
-      val firstNumbers = numbers.first()
-      // escreve min. toast e aperta TAB
-      Toast.makeText(this, firstNumbers.word, Toast.LENGTH_SHORT).show()
-    }
-    lifecycleScope.launch {
-      wordViewModel.add(Word("Banana", 6))
-      wordViewModel.add(Word("Uva", 3))
-      wordViewModel.getAll()
-      wordViewModel.getByName("Banana")
-      wordViewModel.getBySize(3)
-    }
-    val fab = findViewById<FloatingActionButton>(R.id.fab)
-    fab.setOnClickListener {
-      val intent = Intent(this@MainActivity, NewWordActivity::class.java)
-      startActivityForResult(intent, newWordActivityRequestCode)
-    }
-  }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        val adapter = WordListAdapter()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        wordViewModel.list.observe(this) { words ->
+            adapter.list.addAll(words)
+            adapter.notifyDataSetChanged()
+        }
+//        wordViewModel.filteredByName.observe(this) { words ->
+//            val firstWord = words.first()
+//            // escreve min. toast e aperta TAB
+//                Toast.makeText(this, firstWord.word, Toast.LENGTH_SHORT).show()
+//        }
+//        wordViewModel.filteredBySize.observe(this) { numbers ->
+//            val firstNumbers = numbers.first()
+//            // escreve min. toast e aperta TAB
+//            Toast.makeText(this, firstNumbers.word, Toast.LENGTH_SHORT).show()
+//        }
+        wordViewModel.filteredByPrice.observe(this) { Prices ->
+            val firstPrice = Prices.first()
+            // escreve min. toast e aperta TAB
+            Toast.makeText(this, firstPrice.price.toString(), Toast.LENGTH_SHORT).show()
+        }
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
-    super.onActivityResult(requestCode, resultCode, intentData)
-    if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
-      intentData?.getStringExtra(NewWordActivity.EXTRA_REPLY)?.let { reply ->
-        // val word = Word(reply.)
-        // wordViewModel.insert(word)
-      }
-    } else {
-      Toast.makeText(
-        applicationContext,
-        R.string.empty_not_saved,
-        Toast.LENGTH_LONG
-      ).show()
+
+        lifecycleScope.launch {
+            wordViewModel.add(Word("Banana", 6, "Verde",2.0))
+            wordViewModel.add(Word("Uva", 3, "Big",3.89))
+            wordViewModel.getAll()
+            wordViewModel.getByName("Banana")
+            wordViewModel.getBySize(6)
+            wordViewModel.getByDescription("Verde")
+            wordViewModel.getByPrice(2.0)
+        }
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
+            val intent = Intent(this@MainActivity, NewWordActivity::class.java)
+            startActivityForResult(intent, newWordActivityRequestCode)
+        }
     }
-  }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intentData)
+        if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
+            intentData?.getStringExtra(NewWordActivity.EXTRA_REPLY)?.let { reply ->
+                // val word = Word(reply.)
+                // wordViewModel.insert(word)
+            }
+        } else {
+            Toast.makeText(
+                applicationContext,
+                R.string.empty_not_saved,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
 }
 

@@ -18,6 +18,12 @@ interface WordDao {
     @Query("SELECT * FROM Word WHERE size = :number ORDER BY size ASC")
     fun getSizeFromWord(number: Int): List<Word>
 
+    @Query("SELECT * FROM Word WHERE description = :information ORDER BY description ASC")
+    fun getDescriptionFromWord(information: String): List<Word>
+
+    @Query("SELECT * FROM Word WHERE price = :cost ORDER BY price ASC")
+    fun getPrice(cost: Double): List<Word>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(word: Word): Long
 }
