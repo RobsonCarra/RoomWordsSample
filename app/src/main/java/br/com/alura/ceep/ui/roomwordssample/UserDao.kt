@@ -8,12 +8,9 @@ import androidx.room.Query
 @Dao
 interface UserDao {
 
-    @Query("SELECT * FROM User WHERE email = :adress ORDER BY email ASC")
-    fun getEmail(adress: String): List<User>
-
-    @Query("SELECT * FROM User WHERE password = :key ORDER BY password ASC")
-    fun getPassword(key: String): List<User>
+    @Query("SELECT * FROM User WHERE email = :adress AND password = :key ORDER BY email ASC")
+    fun getUser(adress: String, key: String): List<User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun put(user: User): Long
+    fun putUser(user: User): Long
 }

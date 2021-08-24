@@ -8,42 +8,42 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WordViewModel(
-    private val repository: WordRepository,
-    private val repository2: UserRepository
+    private val wordRepository: WordRepository,
+    private val userRepository: UserRepository
 
 ) : ViewModel() {
-    val list = MutableLiveData<List<Word>>()
+    val wordList = MutableLiveData<List<Word>>()
     val filteredByName = MutableLiveData<List<Word>>()
     val filteredBySize = MutableLiveData<List<Word>>()
     val filteredByDecription = MutableLiveData<List<Word>>()
     val filteredByPrice = MutableLiveData<List<Word>>()
-    val filteredByEmail = MutableLiveData<List<User>>()
-    val filteredByPassword = MutableLiveData<List<User>>()
+    val filteredByUser = MutableLiveData<List<User>>()
+
 
     fun getAll() {
         viewModelScope.launch(Dispatchers.IO) {
-            val words = repository.get()
-            list.postValue(words)
+            val words = wordRepository.get()
+            wordList.postValue(words)
         }
     }
 
     fun getByName(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val words = repository.getByName(name)
+            val words = wordRepository.getByName(name)
             filteredByName.postValue(words)
         }
     }
 
     fun getBySize(number: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val numbers = repository.getBySize(number)
+            val numbers = wordRepository.getBySize(number)
             filteredBySize.postValue(numbers)
         }
     }
 
     fun getByDescription(information: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val informations = repository.getByDescription(information)
+            val informations = wordRepository.getByDescription(information)
             filteredByDecription.postValue(informations)
         }
 
@@ -51,7 +51,7 @@ class WordViewModel(
 
     fun getByPrice(cost: Double) {
         viewModelScope.launch(Dispatchers.IO) {
-            val total = repository.getByPrice(cost)
+            val total = wordRepository.getByPrice(cost)
             filteredByPrice.postValue(total)
         }
 
@@ -59,39 +59,32 @@ class WordViewModel(
 
     fun add(word: Word) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.add(word)
+            wordRepository.add(word)
         }
     }
 
-    fun getByEmail(adress: String) {
+    fun getByUser(adress: String, key: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val adresses = repository2.getByEmail(adress)
-            filteredByEmail.postValue(adresses)
+            val Users = userRepository.getByUser(adress, key)
+            filteredByUser.postValue(Users)
         }
     }
 
-    fun getByPassword(key: String) {
+    fun addUser(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
-            val keys = repository2.getByPassword(key)
-            filteredByPassword.postValue(keys)
-        }
-    }
-
-    fun add2(user: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository2.add2(user)
+            userRepository.add(user)
         }
     }
 
     class WordViewModelFactory(
-        private val repository: WordRepository,
-        private val repository2: UserRepository
+        private val wordRepository: WordRepository,
+        private val userRepository: UserRepository
     ) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(WordViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return WordViewModel(repository, repository2) as T
+                return WordViewModel(wordRepository, userRepository) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

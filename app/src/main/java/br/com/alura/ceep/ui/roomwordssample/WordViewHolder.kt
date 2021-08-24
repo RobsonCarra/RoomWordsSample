@@ -11,6 +11,7 @@ class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(text: String?) {
         wordItemView.text = text
     }
+
     companion object {
         fun create(parent: ViewGroup): WordViewHolder {
             val view: View = LayoutInflater.from(parent.context)

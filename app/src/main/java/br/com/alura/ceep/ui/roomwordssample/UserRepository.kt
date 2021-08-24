@@ -2,12 +2,10 @@ package br.com.alura.ceep.ui.roomwordssample
 
 class UserRepository(private val userDao: UserDao) {
 
-    fun getByEmail(adress: String) = userDao.getEmail(adress)
+    fun getByUser(adress: String, key: String) = userDao.getUser(adress, key)
 
-    fun getByPassword(key: String) = userDao.getPassword(key)
-
-    fun add2(user: String): Boolean {
-        userDao.put(user)
+    fun add(user: User): Boolean {
+        userDao.putUser(user)
         return true
     }
 

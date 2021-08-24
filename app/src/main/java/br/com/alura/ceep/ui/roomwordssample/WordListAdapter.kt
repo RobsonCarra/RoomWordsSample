@@ -8,8 +8,7 @@ import kotlin.collections.ArrayList
 
 class WordListAdapter : RecyclerView.Adapter<WordViewHolder>() {
 
-    var list = ArrayList<Word>()
-    var list2 = ArrayList<User>()
+    var wordList = ArrayList<Word>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         return WordViewHolder.create(parent)
@@ -21,19 +20,19 @@ class WordListAdapter : RecyclerView.Adapter<WordViewHolder>() {
     }
 
     fun getItem(position: Int): Word {
-        return list.get(position)
+        return wordList.get(position)
     }
 
     fun getItemFirst(): Word {
-        return list.first()
+        return wordList.first()
     }
 
     fun getItemLast(): Word {
-        return list.last()
+        return wordList.last()
     }
 
     override fun getItemCount(): Int {
-        return list.count()
+        return wordList.count()
     }
 
     companion object {
