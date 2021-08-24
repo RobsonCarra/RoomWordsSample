@@ -4,10 +4,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
+import kotlin.collections.ArrayList
 
 class WordListAdapter : RecyclerView.Adapter<WordViewHolder>() {
 
     var list = ArrayList<Word>()
+    var list2 = ArrayList<User>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         return WordViewHolder.create(parent)

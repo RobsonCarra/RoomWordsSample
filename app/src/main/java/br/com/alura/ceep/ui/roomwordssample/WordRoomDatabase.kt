@@ -10,10 +10,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = [Word::class], version = 1, exportSchema = false)
+@Database(entities = [Word::class, User::class], version = 1, exportSchema = false)
+
 abstract class WordRoomDatabase : RoomDatabase() {
 
     abstract fun wordDao(): WordDao
+    abstract fun userDao(): UserDao
 
     private class WordDatabaseCallback() : RoomDatabase.Callback() {
 
@@ -45,7 +47,7 @@ abstract class WordRoomDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     WordRoomDatabase::class.java,
-                    "word_database5"
+                    "Word_database5"
                 ).addCallback(WordDatabaseCallback()).build()
                 INSTANCE = instance
                 // return instance
