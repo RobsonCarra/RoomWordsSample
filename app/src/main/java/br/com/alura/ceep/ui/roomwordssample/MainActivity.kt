@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editSearch: TextInputEditText
     private lateinit var putPassword: TextInputEditText
     private lateinit var putEmail: TextInputEditText
+    private lateinit var putConfirmPassword: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +35,21 @@ class MainActivity : AppCompatActivity() {
         editSearch = findViewById(R.id.texto)
         putPassword = findViewById(R.id.password_input)
         putEmail = findViewById(R.id.email_input)
+        putConfirmPassword = findViewById(R.id.confirm_password_input)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = EmailListAdapter()
+        val adapter = EmailListAdapter { position -> onListItemClick(position) }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         viewModel.emailList.observe(this) { emails ->
             adapter.emailList.addAll(emails)
             adapter.notifyDataSetChanged()
         }
+
+//        mGithubRepositoryAdapter = GithubRepositoryAdapter { position -> onListItemClick(position) }
+//        mRepositoryRecyclerView.adapter = mGithubRepositoryAdapter
+
+        viewModel.passwordList.observe
+
         viewModel.added.observe(this) { saved ->
             if (saved) {
                 Toast.makeText(this, "User saved", Toast.LENGTH_SHORT).show()
@@ -106,12 +114,28 @@ class MainActivity : AppCompatActivity() {
         saveBtn.setOnClickListener {
             val email = putEmail.text.toString()
             val password = putPassword.text.toString()
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                viewModel.getByUser(email, password)
+            val confirmPassword = putConfirmPassword.text.toString()
+            if (password != confirmPassword) {
+                Toast.makeText(
+                    this, "Different passwords. " +
+                            "Please, to save the user," +
+                            " confirm the password correctly",
+                    Toast.LENGTH_LONG
+
+                ).show()
             } else {
-                Toast.makeText(this, "Invalid login", Toast.LENGTH_SHORT).show()
+                if (email.isNotEmpty() && password.isNotEmpty()) {
+                    viewModel.getByUser(email, password)
+                } else {
+                    Toast.makeText(this, "Invalid login", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+    }
+
+    private fun onListItemClick(position: Int) {
+
+        Toast.makeText(this, mRepos[position].name, Toast.LENGTH_SHORT).show()
     }
 }
 
