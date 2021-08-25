@@ -8,6 +8,9 @@ import androidx.room.Query
 @Dao
 interface UserDao {
 
+    @Query("SELECT * FROM User ORDER BY email ASC")
+    fun getAllUsers(): List<Word>
+
     @Query("SELECT * FROM User WHERE email = :adress AND password = :key ORDER BY email ASC")
     fun getUser(adress: String, key: String): List<User>
 
