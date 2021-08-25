@@ -31,7 +31,7 @@ class WordViewModel(
     fun getAllUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             val users = userRepository.get()
-            val formatted = users.flatMap { it.email }
+            val formatted = users.map { it.email }
             emailList.postValue(formatted)
         }
     }

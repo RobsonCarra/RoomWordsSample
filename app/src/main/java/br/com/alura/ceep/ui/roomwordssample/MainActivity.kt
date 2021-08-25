@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.add(Word("Uva", 3, "Big", 3.89))
             viewModel.getAll()
             //wordViewModel.getByName("Banana")
+            viewModel.getAllUsers()
             viewModel.getBySize(6)
             viewModel.getByDescription("Verde")
             viewModel.getByPrice(2.0)
