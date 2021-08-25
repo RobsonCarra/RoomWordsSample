@@ -37,18 +37,16 @@ class MainActivity : AppCompatActivity() {
         putEmail = findViewById(R.id.email_input)
         putConfirmPassword = findViewById(R.id.confirm_password_input)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = EmailListAdapter { position -> onListItemClick(position) }
+        val adapter = EmailListAdapter { user -> onListItemClick(user) }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        viewModel.emailList.observe(this) { emails ->
-            adapter.emailList.addAll(emails)
+        viewModel.list.observe(this) { users ->
+            adapter.list.addAll(users)
             adapter.notifyDataSetChanged()
         }
 
 //        mGithubRepositoryAdapter = GithubRepositoryAdapter { position -> onListItemClick(position) }
 //        mRepositoryRecyclerView.adapter = mGithubRepositoryAdapter
-
-        viewModel.passwordList.observe
 
         viewModel.added.observe(this) { saved ->
             if (saved) {
@@ -133,9 +131,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onListItemClick(position: Int) {
-
-        Toast.makeText(this, mRepos[position].name, Toast.LENGTH_SHORT).show()
+    private fun onListItemClick(user: User) {
+        Toast.makeText(this, user.password, Toast.LENGTH_SHORT).show()
     }
 }
 

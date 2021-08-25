@@ -19,8 +19,7 @@ class WordViewModel(
     val filteredByPrice = MutableLiveData<List<Word>>()
     val filteredByUser = MutableLiveData<List<User>>()
     val added = MutableLiveData<Boolean>()
-    val emailList = MutableLiveData<List<String>>()
-    val passwordList = MutableLiveData<List<User>>()
+    val list = MutableLiveData<List<User>>()
 
     fun getAll() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -32,9 +31,7 @@ class WordViewModel(
     fun getAllUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             val users = userRepository.get()
-            val formatted = users.map { it.email }
-            emailList.postValue(formatted)
-            passwordList.postValue(users)
+            list.postValue(users)
         }
     }
 
