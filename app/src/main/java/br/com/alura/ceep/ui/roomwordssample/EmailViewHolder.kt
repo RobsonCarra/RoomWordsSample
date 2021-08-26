@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 class EmailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-  private val emailItemView: TextView = itemView.findViewById(R.id.textView)
+    private val emailItemView: TextView = itemView.findViewById(R.id.textView)
 
-  fun bind(text: String?) {
-    emailItemView.text = text
-  }
+    fun bind(text: String?) {
+        emailItemView.text = text
+    }
 }

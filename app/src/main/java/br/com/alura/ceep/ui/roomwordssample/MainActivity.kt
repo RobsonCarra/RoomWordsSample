@@ -45,8 +45,6 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
         }
 
-//        mGithubRepositoryAdapter = GithubRepositoryAdapter { position -> onListItemClick(position) }
-//        mRepositoryRecyclerView.adapter = mGithubRepositoryAdapter
 
         viewModel.added.observe(this) { saved ->
             if (saved) {
@@ -119,7 +117,6 @@ class MainActivity : AppCompatActivity() {
                             "Please, to save the user," +
                             " confirm the password correctly",
                     Toast.LENGTH_LONG
-
                 ).show()
             } else {
                 if (email.isNotEmpty() && password.isNotEmpty()) {
