@@ -20,7 +20,6 @@ class WordViewModel(
     val filteredByUser = MutableLiveData<List<User>>()
     val added = MutableLiveData<Boolean>()
     val list = MutableLiveData<List<User>>()
-    val position = MutableLiveData<List<Int>>()
 
     fun getAll() {
         viewModelScope.launch(Dispatchers.IO) {

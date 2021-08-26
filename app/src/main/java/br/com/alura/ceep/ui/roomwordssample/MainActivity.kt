@@ -37,14 +37,15 @@ class MainActivity : AppCompatActivity() {
         putEmail = findViewById(R.id.email_input)
         putConfirmPassword = findViewById(R.id.confirm_password_input)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = EmailListAdapter { user -> onListItemClick(user) }
+        val adapter = EmailListAdapter { user, position ->
+            onListItemClick(user, position)
+        }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         viewModel.list.observe(this) { users ->
             adapter.list.addAll(users)
             adapter.notifyDataSetChanged()
         }
-
 
         viewModel.added.observe(this) { saved ->
             if (saved) {
@@ -128,8 +129,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onListItemClick(user: User) {
-        Toast.makeText(this, user.password, Toast.LENGTH_SHORT).show()
+    private fun onListItemClick(user: User, position: Int) {
+        Toast.makeText(this, user.password + " " + position, Toast.LENGTH_SHORT).show()
     }
 }
 

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class EmailListAdapter(private val onItemClicked: (user: User) -> Unit) :
+class EmailListAdapter(private val onItemClicked: (user: User, position: Int) -> Unit) :
     RecyclerView.Adapter<EmailViewHolder>() {
 
     var list = ArrayList<User>()
@@ -20,7 +20,7 @@ class EmailListAdapter(private val onItemClicked: (user: User) -> Unit) :
     override fun onBindViewHolder(holder: EmailViewHolder, position: Int) {
         holder.bind(list.get(position).email)
         holder.itemView.setOnClickListener {
-            onItemClicked(list.get(position))
+            onItemClicked(list.get(position), position)
         }
     }
 
