@@ -8,9 +8,6 @@ class WordsApplication : Application() {
     private val database by lazy {
         WordRoomDatabase.getDatabase(this)
     }
-    val wordRepository by lazy {
-        WordRepository(database.wordDao())
-    }
     val userRepository by lazy {
         UserRepository(database.userDao())
     }
