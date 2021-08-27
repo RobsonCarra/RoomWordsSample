@@ -1,9 +1,6 @@
 package br.com.alura.ceep.ui.roomwordssample
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface UserDao {
@@ -16,4 +13,7 @@ interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun putUser(user: User): Long
+
+    @Delete
+    fun deleteUser(user: User): Int
 }

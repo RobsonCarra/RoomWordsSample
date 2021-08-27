@@ -1,5 +1,6 @@
 package br.com.alura.ceep.ui.roomwordssample
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -13,7 +14,6 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-
     private val viewModel: WordViewModel by viewModels {
         WordViewModelFactory(
             (application as WordsApplication).userRepository
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         putConfirmPassword = findViewById(R.id.confirm_password_input)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = EmailListAdapter { user, position ->
-            onListItemClick(user, position)
+            onListItemClick(user, position); onListRemoveButtonClick(user, position)
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -40,26 +40,24 @@ class MainActivity : AppCompatActivity() {
             adapter.list.addAll(users)
             adapter.notifyDataSetChanged()
         }
-
+        viewModel.deleted.observe(this) { excluded ->
+            if (excluded) {
+                Toast.makeText(this, "User excluded", Toast.LENGTH_SHORT).show()
+                val serviceStauts = true
+                fun createCheckboxList(items: Boolean) {
+                    val serviceStatusIntent =
+                        Intent(this@MainActivity, EmailListAdapter::class.java)
+                    serviceStatusIntent.putExtra("booleanServicfeStatus", serviceStauts)
+                    startActivity(serviceStatusIntent)
+                }
+            }
+        }
         viewModel.added.observe(this) { saved ->
             if (saved) {
                 Toast.makeText(this, "User saved", Toast.LENGTH_SHORT).show()
             }
         }
-        viewModel.filteredByUser.observe(this) { users ->
-            if (users.isNotEmpty()) {
-                Toast.makeText(this, "User already exist", Toast.LENGTH_SHORT).show()
-            } else {
-                val email = putEmail.text.toString()
-                val password = putPassword.text.toString()
-                val user = User(email, password)
-                viewModel.addUser(user)
-            }
-        }
-        lifecycleScope.launch {
-            viewModel.getAllUsers()
-            viewModel.addUser(User("fleury", "robson"))
-        }
+
         val saveBtn = findViewById<Button>(R.id.saveBtn)
         saveBtn.setOnClickListener {
             val email = putEmail.text.toString()
@@ -80,11 +78,28 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        viewModel.filteredByUser.observe(this) { users ->
+            if (users.isNotEmpty()) {
+                Toast.makeText(this, "User already exist", Toast.LENGTH_SHORT).show()
+            } else {
+                val email = putEmail.text.toString()
+                val password = putPassword.text.toString()
+                val user = User(email, password)
+                viewModel.addUser(user)
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.getAllUsers()
+            viewModel.addUser(User("fleury", "robson"))
+        }
     }
 
-    private fun onListItemClick(user: User, position: Int) {
+    fun onListItemClick(user: User, position: Int) {
         Toast.makeText(this, user.password + " " + position, Toast.LENGTH_SHORT).show()
     }
-}
 
+    fun onListRemoveButtonClick(user: User, position: Int) {
+        viewModel.deleteUser(user)
+    }
+}
 

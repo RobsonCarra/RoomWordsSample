@@ -41,6 +41,9 @@ android {
     }
 }
 dependencies {
+    implementation 'androidx.room:room-runtime:2.2.1'
+    kapt 'androidx.room:room-compiler:2.2.1'
+    implementation 'androidx.room:room-rxjava2:2.2.1'
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
     implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
 
@@ -73,4 +76,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestImplementation "androidx.test.ext:junit:$rootProject.androidxJunitVersion"
+    android.defaultConfig.vectorDrawables.useSupportLibrary = true
 }

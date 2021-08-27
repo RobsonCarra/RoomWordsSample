@@ -14,4 +14,13 @@ class UserRepository(private val userDao: UserDao) {
             return false
         }
     }
+
+    fun delete(user: User): Boolean {
+        val id = userDao.deleteUser(user)
+        if (id > 0) {
+            return true
+        } else {
+            return false
+        }
+    }
 }

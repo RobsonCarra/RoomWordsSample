@@ -7,14 +7,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 class WordViewModel(
     private val userRepository: UserRepository
 
 ) : ViewModel() {
     val filteredByUser = MutableLiveData<List<User>>()
     val added = MutableLiveData<Boolean>()
+    val deleted = MutableLiveData<Boolean>()
     val list = MutableLiveData<List<User>>()
-
 
     fun getAllUsers() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -35,6 +36,15 @@ class WordViewModel(
             val saved = userRepository.add(user)
             if (saved) {
                 added.postValue(true)
+            }
+        }
+    }
+
+    fun deleteUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val excluded = userRepository.delete(user)
+            if (excluded) {
+                deleted.postValue(true)
             }
         }
     }
