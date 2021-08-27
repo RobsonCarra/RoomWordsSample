@@ -14,7 +14,7 @@ class WordViewModel(
 ) : ViewModel() {
     val filteredByUser = MutableLiveData<List<User>>()
     val added = MutableLiveData<Boolean>()
-    val deleted = MutableLiveData<Boolean>()
+    val deleted = MutableLiveData<User>()
     val list = MutableLiveData<List<User>>()
 
     fun getAllUsers() {
@@ -44,7 +44,7 @@ class WordViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val excluded = userRepository.delete(user)
             if (excluded) {
-                deleted.postValue(true)
+                deleted.postValue(user)
             }
         }
     }
