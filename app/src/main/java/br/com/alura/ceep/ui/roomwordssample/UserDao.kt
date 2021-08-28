@@ -12,8 +12,9 @@ interface UserDao {
     fun getUser(adress: String, key: String): List<User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun putUser(user: User): Long
+    fun save(user: User): Long
 
     @Delete
     fun deleteUser(user: User): Int
+
 }

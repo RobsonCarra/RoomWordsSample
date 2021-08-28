@@ -13,9 +13,10 @@ class WordViewModel(
 
 ) : ViewModel() {
     val filteredByUser = MutableLiveData<List<User>>()
-    val added = MutableLiveData<Boolean>()
+    val added = MutableLiveData<Boolean>(false)
     val deleted = MutableLiveData<User>()
     val list = MutableLiveData<List<User>>()
+    val statusChanged = MutableLiveData<Boolean>(false)
 
     fun getAllUsers() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -36,6 +37,26 @@ class WordViewModel(
             val saved = userRepository.add(user)
             if (saved) {
                 added.postValue(true)
+            }
+        }
+    }
+
+    fun activeUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            user.status = true
+            val saved = userRepository.save(user)
+            if (saved) {
+                statusChanged.postValue(true)
+            }
+        }
+    }
+
+    fun inactiveUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            user.status = false
+            val saved = userRepository.save(user)
+            if (saved) {
+                statusChanged.postValue(true)
             }
         }
     }
