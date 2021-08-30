@@ -21,5 +21,4 @@ class EmailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             status.text = "Desativar";
         }
     }
-
 }
