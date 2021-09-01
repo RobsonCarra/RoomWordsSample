@@ -40,16 +40,3 @@ class EmailListAdapter(
     }
 
 }
-
-//    EXEMPLE BUTTON
-//    var button_text: Int = 1;
-//            val statusBtn = findViewById(R.id.active_inactive_button)
-//            statusBtn.setOnClickListener {
-//                if (button_text == 2) {
-//                    statusBtn.text = "Ativo";
-//                    button_text = 2;
-//                } else if (button_text == 1) {
-//                    statusBtn.text = "Desativo"
-//                    button_text = 1;
-//                }
-//        }
